@@ -55,56 +55,56 @@ INSERT INTO relationships (employee1_id, employee2_id)
 SELECT roy_id.id, pam_id.id
 FROM roy_id, pam_id;
 
--- -- -- 20. ("Ryan Howard" and "Kelly Kapoor" are in a romantic relationship)
--- WITH ryan_id AS (
---     SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard"
--- ), kelly_id AS (
---     SELECT id FROM employees WHERE first_name = "Kelly" AND last_name = "Kapoor"
--- )
--- INSERT INTO relationships (employee1_id, employee2_id)
--- SELECT ryan_id.id, kelly_id.id
--- FROM ryan_id, kelly_id;
+-- -- 20. ("Ryan Howard" and "Kelly Kapoor" are in a romantic relationship)
+WITH ryan_id AS (
+    SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard"
+), kelly_id AS (
+    SELECT id FROM employees WHERE first_name = "Kelly" AND last_name = "Kapoor"
+)
+INSERT INTO relationships (employee1_id, employee2_id)
+SELECT ryan_id.id, kelly_id.id
+FROM ryan_id, kelly_id;
 
--- -- -- 23. ("Roy Anderson" and "Pam Beesly" are NO LONGER in a romantic relationship)
--- DELETE FROM relationships
--- WHERE employee1_id = (SELECT id FROM employees WHERE first_name = 'Roy' AND last_name = 'Anderson')
--- AND employee2_id = (SELECT id FROM employees WHERE first_name = 'Pam' AND last_name = 'Beesly');
+-- -- 23. ("Roy Anderson" and "Pam Beesly" are NO LONGER in a romantic relationship)
+DELETE FROM relationships
+WHERE employee1_id = (SELECT id FROM employees WHERE first_name = 'Roy' AND last_name = 'Anderson')
+AND employee2_id = (SELECT id FROM employees WHERE first_name = 'Pam' AND last_name = 'Beesly');
 
 
 ------------------------------------------------------- (office_parties)
--- -- 10. (An onsite office party is scheduled with a budget of $100.00)
--- INSERT INTO office_parties(name, location, budget, onsite)
--- VALUES("First Party", "PA", 100, TRUE);
+-- 10. (An onsite office party is scheduled with a budget of $100.00)
+INSERT INTO office_parties(name, location, budget, onsite)
+VALUES("First Party", "PA", 100, TRUE);
 
 
 ------------------------------------------------------- (performance_reviews)
--- -- 11. ("Dwight Schrute" gets a performance review with a score of 3.3)
--- INSERT INTO performance_reviews(employee_id, score)
--- SELECT id, 3.3 FROM employees
--- WHERE first_name = "Dwight" AND last_name = "Schrute";
+-- 11. ("Dwight Schrute" gets a performance review with a score of 3.3)
+INSERT INTO performance_reviews(employee_id, score)
+SELECT id, 3.3 FROM employees
+WHERE first_name = "Dwight" AND last_name = "Schrute";
 
--- -- 12. ("Jim Halpert"'s past performance review needs to be changed to a score of 9.3)
--- INSERT INTO performance_reviews(employee_id, score)
--- SELECT id, 4.2 FROM employees
--- WHERE first_name = "Jim" AND last_name = "Halpert";
+-- 12. ("Jim Halpert"'s past performance review needs to be changed to a score of 9.3)
+INSERT INTO performance_reviews(employee_id, score)
+SELECT id, 4.2 FROM employees
+WHERE first_name = "Jim" AND last_name = "Halpert";
 
--- -- 13. ("Dwight Schrute"'s past performance review needs to be changed to a score of 9.0)
--- UPDATE performance_reviews
--- SET score = 9.0
--- WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Dwight"
--- AND last_name = "Schrute");
+-- 13. ("Dwight Schrute"'s past performance review needs to be changed to a score of 9.0)
+UPDATE performance_reviews
+SET score = 9.0
+WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Dwight"
+AND last_name = "Schrute");
 
--- -- 14. ("Jim Halpert"'s past performance review needs to be changed to a score of 9.3)
--- UPDATE performance_reviews
--- SET score = 9.3
--- WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Jim"
--- AND last_name = "Halpert");
+-- 14. ("Jim Halpert"'s past performance review needs to be changed to a score of 9.3)
+UPDATE performance_reviews
+SET score = 9.3
+WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Jim"
+AND last_name = "Halpert");
 
 
 ---------------------------------------------------------- (Deleting Ryan from everything)
--- -- 26. ("Ryan Howard" quits the office (make sure to remove his relationships and performance reviews if he has any)
--- BEGIN;
--- DELETE FROM performance_reviews WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard");
--- DELETE FROM relationships WHERE employee1_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard") OR employee2_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard");
--- DELETE FROM employees WHERE first_name = "Ryan" AND last_name = "Howard";
--- COMMIT;
+-- 26. ("Ryan Howard" quits the office (make sure to remove his relationships and performance reviews if he has any)
+BEGIN;
+DELETE FROM performance_reviews WHERE employee_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard");
+DELETE FROM relationships WHERE employee1_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard") OR employee2_id = (SELECT id FROM employees WHERE first_name = "Ryan" AND last_name = "Howard");
+DELETE FROM employees WHERE first_name = "Ryan" AND last_name = "Howard";
+COMMIT;
